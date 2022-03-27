@@ -16,6 +16,10 @@ const Article = sequelize.define('Article', {
         type: DataTypes.STRING,
         allowNull: false,
     },
+    imgUrl: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+    },
     content: {
         type: DataTypes.TEXT,
         allowNull: false,

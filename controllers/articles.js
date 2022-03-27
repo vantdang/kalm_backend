@@ -45,7 +45,7 @@ module.exports.getSingleArticleById = async (req, res ) => {
         console.log("Hello");
         console.log(id)
         let article = await Article.findByPk(id, {include: Category});
-
+        article.content = article.content ? article.content.replace("/n", "\n") : "";
         res.status(200).json({article});
     } catch (e) {
         return res.status(422).json({
@@ -117,8 +117,9 @@ module.exports.getAllArticles = async (req, res) => {
                        model: Category,
                        attributes: ['name'],
                        where : {name:category},
-                    },    
-                ]      
+                    },
+                ],      
+                attributes: { includes: ["createdAt"] }    
             })
         } else if (author && !category) {
             article = await Article.findAll({
@@ -127,7 +128,8 @@ module.exports.getAllArticles = async (req, res) => {
                         model: Category,
                         attributes: ['name'],
                     }
-                ]
+                ],
+                attributes: { includes: ["createdAt"] } 
             })
         } else if (author && category) {
             article = await Article.findAll({
@@ -137,7 +139,8 @@ module.exports.getAllArticles = async (req, res) => {
                         attributes: ['name'],
                         where: {name: category}
                     }
-                ]
+                ],
+                attributes: { includes: ["createdAt"] } 
             }) 
         } else {
             article = await Article.findAll({
@@ -146,7 +149,10 @@ module.exports.getAllArticles = async (req, res) => {
                         model: Category,
                         attributes: ["name"]
                     }
-                ]
+                ],
+                limit: parseInt(limit),
+                offset: parseInt(offset)
+                // attributes: { includes: ["createdAt"] } 
             })
         }
         res.json({article});
