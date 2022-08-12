@@ -9,11 +9,13 @@ module.exports.createArticle = async ( req, res) => {
         if(!data.title) throw new Error('Article title is required');
         if(!data.content) throw new Error("Article body is required");
         if(!data.author) throw new Error("Article author is required");
+        if(!data.imgUrl) throw new Error("Article img is required")
 
         let article = await Article.create({
             title: data.title,
             content: data.content,
             author: data.author,
+            imgUrl: data.imgUrl
         });
         let articleID = article.id;
         if (data.catList){
